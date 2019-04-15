@@ -7,24 +7,26 @@ services:
       - "8080:8080"
     volumes:
       - ./:/app
+
   judge_server:
     build: ./judge_server
     ports:
       - "8000:8000"
+
   db:
     build: ./postgres
     restart: always
-    environment:
-      MYSQL_DATABASE: ryokon_db
-      MYSQL_USER: ryokon
-      MYSQL_PASSWORD: root
-      MYSQL_ROOT_PASSWORD: root
     ports:
-      - "3314:3306"
+      - 5432:5432
     volumes:
-      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
-      - ./mysql/conf.d:/etc/mysql/conf.d
-      - ./mysql:/var/log/mysql
+      - ./postgres/init:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+    hostname: postgres
+    user: root
+
   mq:
     build: ./rabbitmq
     restart: always
