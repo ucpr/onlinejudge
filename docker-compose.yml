@@ -1,0 +1,31 @@
+version: '3.3'
+
+services:
+  application:
+    build: ./Application
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
+  judge_server:
+    build: ./judge_server
+    ports:
+      - "8000:8000"
+  db:
+    build: ./postgres
+    restart: always
+    environment:
+      MYSQL_DATABASE: ryokon_db
+      MYSQL_USER: ryokon
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3314:3306"
+    volumes:
+      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
+      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ./mysql:/var/log/mysql
+  mq:
+    build: ./rabbitmq
+    restart: always
+
