@@ -76,9 +76,9 @@ WSGI_APPLICATION = 'OnlineJudgeSystem.wsgi.application'
 
 # Django Rest Framework JWT
 JWT_AUTH = {
-    'JWT_VERIFY_EXPIRATION': False,  # tokenの期限が永続化される
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',
-    }
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+}
 
 # Django Rest Framework
 REST_FRAMEWORK = {
