@@ -9,12 +9,17 @@ from django.http import HttpResponse, Http404
 
 from rest_framework import authentication, permissions, generics
 from rest_framework_jwt.settings import api_settings
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework import status, viewsets, filters
 from rest_framework.views import APIView
 
-from .serializers import ProblemSerializer, ContestsSerializer, ContestSerializer
+from .serializers import (
+        ProblemSerializer,
+        ContestsSerializer,
+        ContestSerializer
+    )
 from .models import Contest, Problem
 
 
@@ -39,22 +44,52 @@ class ContestView(generics.ListAPIView):
     """
     queryset = Contest.objects.all()
     serializer_class = ContestSerializer
+    lookup_url_kwarg = "contest_tag"
 
     def get_queryset(self):
-        if 'contest_tag' in self.request.query_params:
-            tag = self.request.query_params.get("contest_tag")
-        return Contest.objects.filters(tag=tag)
+        if 'contest_tag' in self.kwargs:
+            tag = self.kwargs.get("contest_tag")
+            return Contest.objects.filter(tag=tag)
 
 
-#class AuthRegister(generics.CreateAPIView):
-#    permission_classes = (permissions.AllowAny,)
-#    queryset = Account.objects.all()
-#    serializer_class = AccountSerializer
-#
-#    @transaction.atomic
-#    def post(self, request, format=None):
-#        serializer = AccountSerializer(data=request.data)
-#        if serializer.is_valid():
-#            serializer.save()
-#            return Response(serializer.data, status=status.HTTP_201_CREATED)
-#        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class ProblemsView(generics.ListAPIView, generics.CreateAPIView):
+    """ Contestの問題の情報を返すview
+
+    if is_active and is_open:
+        if 参加登録:
+            200 OK
+        else:
+            PermissionError
+    if is_open and not is_active: 誰でも見れる状態
+        200 OK
+
+    # GET
+    コンテストの問題の情報を返します (制約など)
+    """
+    queryset = Problem.objects.all()
+    serializer_class = ProblemSerializer
+
+    def get_queryset(self):
+        if 'contest_tag' in self.kwargs:
+            tag = self.kwargs.get("contest_tag")
+            return Problem.objects.filter(contest_tag=tag)
+
+
+class ProblemView(generics.ListAPIView):
+    """ 問題の詳細を返すview
+
+    required: is_active and 参加登録 is True
+
+    # GET
+    問題の詳細を返す
+    """
+    queryset = Problem.objects.all()
+    serializer_class = ProblemSerializer
+    lookup_url_kwarg = ['id', 'contest_tag']
+
+    def get_queryset(self):
+        if 'contest_tag' in self.kwargs and 'id' in self.kwargs:
+            tag = self.kwargs.get("contest_tag")
+            _id = self.kwargs.get("id")
+            return Problem.objects.filter(contest_tag=tag, id=_id)
+
