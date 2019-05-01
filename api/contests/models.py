@@ -1,4 +1,5 @@
 from django.db import models
+#from django.core.validators import FileExtensionValidator
 from django.utils.timezone import now
 
 
@@ -6,14 +7,26 @@ from django.utils.timezone import now
 class Problem(models.Model):
     """
     contest_tag そのコンテストの問題のtag
-    problem_path 問題のpath
-    answer_path テストケースや回答のpath
+    problem_name 問題の名前
+    time_limit 時間制限 (sec)
+    memory_limit メモリ制限 (MB)
+    problem 問題の本文
+    _input 入力
+    output 出力
+    example_input_output 入出力例
     """
     contest_tag = models.CharField(max_length=15)
-    problem_path = models.CharField(max_length=50, unique=True)
-    answer_path = models.CharField(max_length=50, unique=True)
-    pass
-
+    problem_name = models.CharField(max_length=20)
+    time_limit = models.IntegerField(default=1)
+    memory_limit = models.IntegerField(default=256)
+    problem = models.CharField(max_length=500)
+    input = models.CharField(max_length=200)
+    output = models.CharField(max_length=200)
+    example_input_output = models.CharField(max_length=500)
+    answer = models.FileField(
+            upload_to='answers/',
+#            varidators=[FileExtensionValidator(['zip'])],
+    )
 
 class Contest(models.Model):
     """

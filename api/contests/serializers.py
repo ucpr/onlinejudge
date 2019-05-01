@@ -4,17 +4,11 @@ from rest_framework import serializers
 
 
 class ProblemSerializer(serializers.ModelSerializer):
-    contest_tag = serializers.CharField(required=True)
-    problem_path = serializers.CharField(required=True)
-    answer_path = serializers.CharField(required=True)
+    # contest_tag = serializers.CharField(required=True)
 
     class Meta:
         model = Problem
-        fields = (
-            'contest_tag',
-            'problem_path',
-            'answer_path',
-        )
+        fields = '__all__'
 
 
 class ContestsSerializer(serializers.ModelSerializer):
