@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import timezone
+from django.utils.timezone import now
 
 
 # Create your models here.
@@ -24,11 +24,13 @@ class Contest(models.Model):
     start_date コンテストの開始時刻
     contest_time コンテスト時間
     writer 問題のwriter
+    top_page トップページ
     """
     is_open = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=30, unique=True)
     tag = models.CharField(max_length=15)
-    start_date = models.DateField(default=timezone.now())
+    start_date = models.DateField(default=now)
     contest_time = models.IntegerField()
     writer = models.CharField(max_length=30)
+    top_page = models.CharField(max_length=100)

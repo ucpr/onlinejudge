@@ -14,7 +14,7 @@ from rest_framework.response import Response
 from rest_framework import status, viewsets, filters
 from rest_framework.views import APIView
 
-from .serializers import ProblemSerializer, ContestSerializer
+from .serializers import ProblemSerializer, ContestsSerializer, ContestSerializer
 from .models import Contest, Problem
 
 
@@ -27,11 +27,23 @@ class ContestsView(generics.ListAPIView, generics.CreateAPIView):
     # POST (admin)
     コンテストを追加します
     """
+    queryset = Contest.objects.all()
+    serializer_class = ContestsSerializer
 
 
+class ContestView(generics.ListAPIView):
+    """ Contestの情報を返すview
+
+    # GET
+    コンテストの詳細を返します
+    """
     queryset = Contest.objects.all()
     serializer_class = ContestSerializer
 
+    def get_queryset(self):
+        if 'contest_tag' in self.request.query_params:
+            tag = self.request.query_params.get("contest_tag")
+        return Contest.objects.filters(tag=tag)
 
 
 #class AuthRegister(generics.CreateAPIView):
