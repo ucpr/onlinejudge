@@ -8,7 +8,7 @@ class ProblemSerializer(serializers.ModelSerializer):
     problem_path = serializers.CharField(required=True)
     answer_path = serializers.CharField(required=True)
 
-    class Meta(object):
+    class Meta:
         model = Problem
         fields = (
             'contest_tag',
@@ -20,6 +20,8 @@ class ProblemSerializer(serializers.ModelSerializer):
 class ContestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contest
+        fields = "__all__"
+
 #    is_open = serializers.BooleanField(required=True)
 #    is_active = serializers.BooleanField(required=True)
 #    title = serializers.CharField(required=True)
@@ -39,4 +41,4 @@ class ContestSerializer(serializers.ModelSerializer):
 #            'contest_time',
 #            'writer',
 #        )
-#
+
