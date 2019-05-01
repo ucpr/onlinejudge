@@ -19,8 +19,19 @@ from .models import Contest, Problem
 
 
 class ContestsView(generics.ListAPIView, generics.CreateAPIView):
+    """ Contestの一覧を返すView
+
+    # GET
+    コンテストの一覧を返します
+
+    # POST (admin)
+    コンテストを追加します
+    """
+
+
     queryset = Contest.objects.all()
     serializer_class = ContestSerializer
+
 
 
 #class AuthRegister(generics.CreateAPIView):
