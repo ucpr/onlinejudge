@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'accounts',
+    'contests',
 ]
 
 MIDDLEWARE = [
@@ -82,7 +83,7 @@ JWT_AUTH = {
 
 # Django Rest Framework
 REST_FRAMEWORK = {
-    'PAGE_SIZE': 100,
+    'PAGE_SIZE': 2,
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'DEFAULT_RENDERER_CLASSES': (
         'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
