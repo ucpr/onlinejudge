@@ -1,4 +1,4 @@
-FROM golang:1.12.1-alpine
+FROM python:3.7-alpine3.8
 
-MAINTAINER Taichi Uchihara <hoge.uchihara@gmail.com>
+MAINTAINER Chihiro Iha <ryubi.102395@gmail.com>
 
