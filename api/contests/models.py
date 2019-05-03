@@ -1,5 +1,4 @@
 from django.db import models
-#from django.core.validators import FileExtensionValidator
 from django.utils.timezone import now
 
 
@@ -17,16 +16,15 @@ class Problem(models.Model):
     """
     contest_tag = models.CharField(max_length=15)
     problem_name = models.CharField(max_length=20)
-    time_limit = models.IntegerField(default=1)
+    time_limit = models.IntegerField()
     memory_limit = models.IntegerField(default=256)
-    problem = models.CharField(max_length=500)
-    input = models.CharField(max_length=200)
-    output = models.CharField(max_length=200)
-    example_input_output = models.CharField(max_length=500)
-    answer = models.FileField(
-            upload_to='answers/',
-#            varidators=[FileExtensionValidator(['zip'])],
-    )
+    problem = models.TextField()
+    input = models.TextField()
+    output = models.TextField()
+    example_input_output = models.TextField()
+    answer = models.BinaryField()
+    foriegn_key = models.ForeignKey(Contest, on_delete=models.CASCADE)
+
 
 class Contest(models.Model):
     """
@@ -36,6 +34,7 @@ class Contest(models.Model):
     tag コンテストのタグ
     start_date コンテストの開始時刻
     contest_time コンテスト時間
+    start_time コンテストの開始時間
     writer 問題のwriter
     top_page トップページ
     """
@@ -44,6 +43,7 @@ class Contest(models.Model):
     title = models.CharField(max_length=30, unique=True)
     tag = models.CharField(max_length=15)
     start_date = models.DateField(default=now)
+    start_time = models.TimeField()
     contest_time = models.IntegerField()
     writer = models.CharField(max_length=30)
-    top_page = models.CharField(max_length=100)
+    top_page = models.TextField()
