@@ -18,9 +18,10 @@ from rest_framework.views import APIView
 from .serializers import (
         ProblemSerializer,
         ContestsSerializer,
-        ContestSerializer
+        ContestSerializer,
+        SubmittionsSerializer,
     )
-from .models import Contest, Problem
+from .models import Contest, Problem, Submittion
 
 
 class ContestsView(generics.ListAPIView, generics.CreateAPIView):
@@ -85,11 +86,28 @@ class ProblemView(generics.ListAPIView):
     """
     queryset = Problem.objects.all()
     serializer_class = ProblemSerializer
-    lookup_url_kwarg = ['id', 'contest_tag']
+    lookup_url_kwarg = ['problem_tag', 'contest_tag']
 
     def get_queryset(self):
-        if 'contest_tag' in self.kwargs and 'id' in self.kwargs:
-            tag = self.kwargs.get("contest_tag")
-            _id = self.kwargs.get("id")
-            return Problem.objects.filter(contest_tag=tag, id=_id)
+        if 'contest_tag' in self.kwargs and 'problem_tag' in self.kwargs:
+            contest_tag = self.kwargs.get("contest_tag")
+            problem_tag = self.kwargs.get("problem_tag")
+            return Problem.objects.filter(contest_tag=contest_tag, problem_tag=problem_tag)
+
+
+class SubmitView(generics.CreateAPIView):
+    """ 回答提出用のView
+
+    # POST
+    回答を提出する
+
+    require:
+        problem_tag
+        source_code
+        status
+        warning
+        error
+    """
+    queryset = Submittion.objects.all()
+    serializer_class = SubmittionsSerializer
 
