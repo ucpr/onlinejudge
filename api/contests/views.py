@@ -54,7 +54,7 @@ class ContestView(generics.ListAPIView):
     def get_queryset(self):
         if 'contest_tag' in self.kwargs:
             tag = self.kwargs.get("contest_tag")
-            return Contest.objects.filter(tag=tag, is_open=True)
+            return Contest.objects.filter(contest_tag=tag, is_open=True)
 
 
 class ProblemsView(generics.ListAPIView, generics.CreateAPIView):
