@@ -25,7 +25,7 @@ from .models import Contest, Problem, Submittion
 
 
 class ContestsView(generics.ListAPIView, generics.CreateAPIView):
-    """ Contestの一覧を返すView
+    """ Contestの一覧を返すView(is_open=True)
 
     # GET
     コンテストの一覧を返します
@@ -35,6 +35,10 @@ class ContestsView(generics.ListAPIView, generics.CreateAPIView):
     """
     queryset = Contest.objects.all()
     serializer_class = ContestsSerializer
+
+    def get_queryset(self):
+        obj = Contest.objects.filter(is_open=True)
+        return obj
 
 
 class ContestView(generics.ListAPIView):
@@ -50,7 +54,7 @@ class ContestView(generics.ListAPIView):
     def get_queryset(self):
         if 'contest_tag' in self.kwargs:
             tag = self.kwargs.get("contest_tag")
-            return Contest.objects.filter(tag=tag)
+            return Contest.objects.filter(tag=tag, is_open=True)
 
 
 class ProblemsView(generics.ListAPIView, generics.CreateAPIView):
@@ -111,3 +115,8 @@ class SubmitView(generics.CreateAPIView):
     queryset = Submittion.objects.all()
     serializer_class = SubmittionsSerializer
 
+
+class RegistContestView(generics.CreateAPIView):
+    """ コンテストに参加登録するためのview
+    """
+    pass
