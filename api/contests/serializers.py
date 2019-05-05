@@ -32,7 +32,6 @@ class SubmittionsSerializer(serializers.ModelSerializer):
     """ 問題の提出 """
 
     def create(self, validate_data):
-        # TODO: validate_dataから初期で必要ないやつはnullで初期化する
         data = validate_data
         data["status"] = None
         data["warning"] = None
@@ -41,6 +40,7 @@ class SubmittionsSerializer(serializers.ModelSerializer):
         data["memory"] = None
         data["byte"] = None
         data["date"] = now()
+        data["is_judged"] = False
         return Submittion(**data)
 
     class Meta:

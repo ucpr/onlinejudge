@@ -68,6 +68,7 @@ class Submittion(models.Model):
     memory メモリ使用量
     byte ソースコードのサイズ
     date 提出した日付
+    is_judged ジャッジされたかのフラグ
     """
     problem_tag = models.CharField(max_length=15)
     source_code = models.TextField()
@@ -81,5 +82,6 @@ class Submittion(models.Model):
     memory = models.IntegerField(blank=True)
     byte = models.IntegerField(blank=True)
     date = models.DateTimeField(blank=True)
+    is_judge = models.BooleanField(default=False, blank=True)
 
 #    foriegn_key = models.ForeignKey(Problem, on_delete=models.CASCADE)
