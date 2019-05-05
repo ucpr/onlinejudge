@@ -8,7 +8,7 @@ class Contest(models.Model):
     is_open コンテストを表示するかしないか
     is_active 現在開催中のコンテストか
     title コンテストのタイトル
-    tag コンテストのタグ
+    contest_tag コンテストのタグ
     start_date コンテストの開始時刻
     contest_time コンテスト時間
     start_time コンテストの開始時間
@@ -18,12 +18,15 @@ class Contest(models.Model):
     is_open = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     title = models.CharField(max_length=30, unique=True)
-    tag = models.CharField(max_length=15)
+    contest_tag = models.CharField(max_length=15)
     start_date = models.DateField(default=now)
     start_time = models.TimeField()
     contest_time = models.IntegerField()
     writer = models.CharField(max_length=30)
     top_page = models.TextField()
+
+    def __str__(self):
+        return self.title + " [" + self.contest_tag + "]"
 
 
 class Problem(models.Model):
@@ -53,6 +56,10 @@ class Problem(models.Model):
     answer = models.BinaryField()
 #    foriegn_key = models.ForeignKey(Contest, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return "(" + self.problem_order + ") " + self.problem_name + \
+                " [" + self.problem_tag + "]" + " from " + contest_tag
+
 
 class Submittion(models.Model):
     """
@@ -70,6 +77,7 @@ class Submittion(models.Model):
     date 提出した日付
     is_judged ジャッジされたかのフラグ
     """
+    contest_tag = models.CharField(max_length=15)
     problem_tag = models.CharField(max_length=15)
     source_code = models.TextField()
     author = models.CharField(max_length=10)
@@ -83,5 +91,8 @@ class Submittion(models.Model):
     byte = models.IntegerField(blank=True)
     date = models.DateTimeField(blank=True)
     is_judge = models.BooleanField(default=False, blank=True)
-
 #    foriegn_key = models.ForeignKey(Problem, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.contest_tag + "." + self.problem_tag + " by " + self.author
+
