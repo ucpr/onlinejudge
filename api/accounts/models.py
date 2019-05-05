@@ -13,11 +13,11 @@ class AccountManager(BaseUserManager):
             raise ValueError('Users must have an email address')
 
         user = self.model(
-            username = request_data['username'],
-            email = self.normalize_email(request_data['email']),
-            is_active = True,
-            last_login = now,
-            date_joined = now,
+            username=request_data['username'],
+            email=self.normalize_email(request_data['email']),
+            is_active=True,
+            last_login=now,
+            date_joined=now,
         )
 
         user.set_password(request_data['password'])
@@ -40,14 +40,14 @@ class AccountManager(BaseUserManager):
 
 
 class Account(AbstractBaseUser):
-    username    = models.CharField(_('username'), max_length=30, unique=True)
-    first_name  = models.CharField(_('first name'), max_length=30, blank=True)
-    last_name   = models.CharField(_('last name'), max_length=30, blank=True)
-    email       = models.EmailField(verbose_name='email address', max_length=255, unique=True)
-    is_active   = models.BooleanField(default=True)
-    is_staff    = models.BooleanField(default=False)
-    is_admin    = models.BooleanField(default=False)
-    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    username = models.CharField(('username'), max_length=30, unique=True)
+    first_name = models.CharField(('first name'), max_length=30, blank=True)
+    last_name = models.CharField(('last name'), max_length=30, blank=True)
+    email = models.EmailField(verbose_name='email address', max_length=255, unique=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(('date joined'), default=timezone.now)
 
     objects = AccountManager()
 
