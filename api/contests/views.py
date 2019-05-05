@@ -108,9 +108,8 @@ class SubmitView(generics.CreateAPIView):
     require:
         problem_tag
         source_code
-        status
-        warning
-        error
+        author
+        language
     """
     queryset = Submittion.objects.all()
     serializer_class = SubmittionsSerializer
