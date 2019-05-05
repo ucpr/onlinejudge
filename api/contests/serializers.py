@@ -1,7 +1,9 @@
+from django.utils.timezone import now
+from rest_framework import serializers
+
 from .models import Contest
 from .models import Problem
 from .models import Submittion
-from rest_framework import serializers
 
 
 class ProblemSerializer(serializers.ModelSerializer):
@@ -31,7 +33,15 @@ class SubmittionsSerializer(serializers.ModelSerializer):
 
     def create(self, validate_data):
         # TODO: validate_dataから初期で必要ないやつはnullで初期化する
-        return Submittion(**validate_data)
+        data = validate_data
+        data["status"] = None
+        data["warning"] = None
+        data["error"] = None
+        data["time"] = None
+        data["memory"] = None
+        data["byte"] = None
+        data["date"] = now()
+        return Submittion(**data)
 
     class Meta:
         model = Submittion

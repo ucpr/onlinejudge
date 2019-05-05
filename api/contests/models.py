@@ -71,15 +71,15 @@ class Submittion(models.Model):
     """
     problem_tag = models.CharField(max_length=15)
     source_code = models.TextField()
-    status = models.CharField(max_length=5)
-    warning = models.TextField()
-    error = models.TextField()
-
     author = models.CharField(max_length=10)
     language = models.CharField(max_length=10)
-    time = models.FloatField()
-    memory = models.IntegerField()
-    byte = models.IntegerField()
-    date = models.DateTimeField()
+
+    status = models.CharField(max_length=5, blank=True)
+    warning = models.TextField(blank=True)
+    error = models.TextField(blank=True)
+    time = models.FloatField(blank=True)
+    memory = models.IntegerField(blank=True)
+    byte = models.IntegerField(blank=True)
+    date = models.DateTimeField(blank=True)
 
     foriegn_key = models.ForeignKey(Problem, on_delete=models.CASCADE)
