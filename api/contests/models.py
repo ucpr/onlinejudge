@@ -51,7 +51,7 @@ class Problem(models.Model):
     output = models.TextField()
     example_input_output = models.TextField()
     answer = models.BinaryField()
-    foriegn_key = models.ForeignKey(Contest, on_delete=models.CASCADE)
+#    foriegn_key = models.ForeignKey(Contest, on_delete=models.CASCADE)
 
 
 class Submittion(models.Model):
@@ -82,4 +82,4 @@ class Submittion(models.Model):
     byte = models.IntegerField(blank=True)
     date = models.DateTimeField(blank=True)
 
-    foriegn_key = models.ForeignKey(Problem, on_delete=models.CASCADE)
+#    foriegn_key = models.ForeignKey(Problem, on_delete=models.CASCADE)
