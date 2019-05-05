@@ -96,3 +96,10 @@ class Submittion(models.Model):
     def __str__(self):
         return self.contest_tag + "." + self.problem_tag + " by " + self.author
 
+
+class RegistContestUser(models.Model):
+    contest_tag = models.CharField(max_length=15)
+    username = models.CharField(max_length=15)
+
+    def __str__(self):
+        return "[" + self.contest_tag + "] " + self.username

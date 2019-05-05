@@ -4,6 +4,7 @@ from rest_framework import serializers
 from .models import Contest
 from .models import Problem
 from .models import Submittion
+from .models import RegistContestUser
 
 
 class ProblemSerializer(serializers.ModelSerializer):
@@ -45,4 +46,12 @@ class SubmittionsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Submittion
+        fields = '__all__'
+
+
+class RegistContestUserSerializer(serializers.ModelSerializer):
+    """ 参加登録 """
+
+    class Meta:
+        model = RegistContestUser
         fields = '__all__'

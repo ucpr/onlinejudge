@@ -20,8 +20,9 @@ from .serializers import (
         ContestsSerializer,
         ContestSerializer,
         SubmittionsSerializer,
+        RegistContestUserSerializer,
     )
-from .models import Contest, Problem, Submittion
+from .models import Contest, Problem, Submittion, RegistContestUser
 
 
 class ContestsView(generics.ListAPIView, generics.CreateAPIView):
@@ -118,4 +119,5 @@ class SubmitView(generics.CreateAPIView):
 class RegistContestView(generics.CreateAPIView):
     """ コンテストに参加登録するためのview
     """
-    pass
+    queryset = RegistContestUser.objects.all()
+    serializer_class = RegistContestUserSerializer
