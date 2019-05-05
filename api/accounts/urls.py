@@ -1,8 +1,8 @@
-from django.conf.urls import include, url
+from django.urls import path
 from rest_framework import routers
 
 from .views import AuthRegister
 
 urlpatterns = [
-    url('register/$', AuthRegister.as_view()),
+    path('register/', AuthRegister.as_view()),
 ]
