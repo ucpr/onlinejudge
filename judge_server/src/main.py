@@ -1,5 +1,5 @@
 import sys
-from judge_server.src.receive_mq import RecieveMQ
+from receive_mq import RecieveMQ
 
 
 # rabbitMQからメーセージを受け取ってcode_runnerコンテナで実行

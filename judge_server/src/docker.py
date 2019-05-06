@@ -2,7 +2,7 @@
 import docker
 import json
 import sys
-from judge_server.src.judge_result import JudgeResult
+from judge_result import JudgeResult
 
 
 # 暫定
