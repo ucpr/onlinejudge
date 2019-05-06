@@ -2,14 +2,26 @@ import json
 
 
 class JudgeResult():
-    def __init__(self, result: str, error_message: str = None):
-        self.result = result
-        self.error_message = error_message if error_message is not None else ""
+    def __init__(
+            self,
+            status: str,
+            error: str = "",
+            warning: str = "",
+            time: int = 0,
+            memory: int = 0):
+        self.status = status
+        self.time = time
+        self.memory = memory
+        self.error = error
+        self.warning = warning
 
     def export_json(self):
         return json.dumps({
-            "result": self.result,
-            "error_message": self.error_message
+            "status": self.status,
+            "error": self.error,
+            "warning": self.warning,
+            "time": self.time,
+            "memory": self.memory
         })
 
 
