@@ -32,21 +32,23 @@ class ContestSerializer(serializers.ModelSerializer):
 class SubmittionsSerializer(serializers.ModelSerializer):
     """ 問題の提出 """
 
-    def create(self, validate_data):
-        data = validate_data
-        data["status"] = None
-        data["warning"] = None
-        data["error"] = None
-        data["time"] = None
-        data["memory"] = None
-        data["byte"] = None
-        data["date"] = now()
-        data["is_judged"] = False
-        return Submittion(**data)
-
     class Meta:
         model = Submittion
         fields = '__all__'
+
+    def create(self, validate_data):
+        data = validate_data
+        data["status"] = "WJ"
+        data["warning"] = ""
+        data["error"] = ""
+        data["time"] = 0
+        data["memory"] = 0
+        data["byte"] = 0
+        data["date"] = now()
+        data["is_judge"] = False
+        submit = Submittion(**data)
+        submit.save()
+        return submit
 
 
 class RegistContestUserSerializer(serializers.ModelSerializer):
