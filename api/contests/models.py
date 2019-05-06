@@ -11,8 +11,9 @@ class Contest(models.Model):
     title コンテストのタイトル
     contest_tag コンテストのタグ
     start_date コンテストの開始時刻
-    contest_time コンテスト時間
     start_time コンテストの開始時間
+    end_date コンテストの終了時刻
+    end_time コンテストの終了時間
     writer 問題のwriter
     top_page トップページ
     """
@@ -23,9 +24,14 @@ class Contest(models.Model):
     contest_tag = models.CharField(max_length=15)
     start_date = models.DateField(default=now)
     start_time = models.TimeField()
-    contest_time = models.IntegerField()
+    end_date = models.DateField(default=now)
+    end_time = models.TimeField()
     writer = models.CharField(max_length=30)
     top_page = models.TextField()
+
+    def contest_time(self):
+        t = self.end_time - self.start_time
+        return r.hours
 
     def __str__(self):
         return self.title + " [" + self.contest_tag + "]"
@@ -100,6 +106,8 @@ class Submittion(models.Model):
 
 
 class RegistContestUser(models.Model):
+    """ コンテストの参加登録
+    """
     contest_tag = models.CharField(max_length=15)
     username = models.CharField(max_length=15)
 
