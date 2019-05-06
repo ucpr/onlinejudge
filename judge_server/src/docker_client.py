@@ -4,7 +4,7 @@ import json
 import os
 import sys
 from judge_result import JudgeResult
-from SubmitData import SubmitData
+from submit_data import SubmitData
 
 
 # 暫定
