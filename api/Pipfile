@@ -16,6 +16,8 @@ django-cors-headers = "*"
 djangorestframework-jwt = "*"
 djangorestframework-camel-case = "*"
 six = "*"
+psycopg2-binary = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"
