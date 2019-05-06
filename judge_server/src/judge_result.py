@@ -7,7 +7,7 @@ class JudgeResult():
             status: str,
             error: str = "",
             warning: str = "",
-            time: int = 0,
+            time: float = 0,
             memory: int = 0):
         self.status = status
         self.time = time
