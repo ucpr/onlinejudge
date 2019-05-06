@@ -7,14 +7,6 @@ from judge_result import JudgeResult
 from submit_data import SubmitData
 
 
-# 暫定
-LANGUAGES = [
-    "c",
-    "cpp",
-    "java",
-    "python"
-]
-
 FILENAME_EXTENTIONS = {
     "c": "c",
     "cpp": "cpp",
@@ -53,30 +45,3 @@ class DockerClient():
             self.container_name,
             command=self.COMMAND
         )
-
-
-# この関数強い 関数名変えたほうがよさそう
-def read_message_from_rabbitmq(body: dict):
-    data = json.loads(body)
-    submit_data = SubmitData(
-        data["submission_id"],
-        data["contest_tag"],
-        data["problem_tag"],
-        data["source_code"],
-        data["language"]
-    )
-
-    if check_language_exists(submit_data.language):
-        return JudgeResult("ERROR", "Cannot run with specified language")
-
-    # TODO: docker走らす系の処理
-
-
-def check_language_exists(language: str) -> bool:
-    if language not in LANGUAGES:
-        sys.stderr.write(
-            "[ERROR]: Cannot run with specified language. {}".format(language)
-        )
-        return False
-    else:
-        return True
