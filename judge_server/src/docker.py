@@ -16,19 +16,23 @@ LANGUAGES = [
 
 def read_message_from_rabbitmq(body: dict):
     data = json.loads(body)
-    language = select_language(data["language"])
+    language = data["language"]
 
-    if language is None:
+    if check_language_exists(language):
         return JudgeResult("ERROR", "Cannot run with specified language")
 
     # TODO: docker走らす系の処理
 
 
-def select_language(language: str):
+def check_language_exists(language: str) -> bool:
     if language not in LANGUAGES:
         sys.stderr.write(
             "[ERROR]: Cannot run with specified language. {}".format(language)
         )
-        return None
+        return False
     else:
-        return language
+        return True
+
+
+def run_container():
+    pass
