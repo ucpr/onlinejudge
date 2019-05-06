@@ -65,8 +65,8 @@ class Problem(models.Model):
 #    foriegn_key = models.ForeignKey(Contest, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "(" + self.problem_order + ") " + self.problem_name + \
-                " [" + self.problem_tag + "]" + " from " + contest_tag
+        return "(" + str(self.problem_order) + ") " + self.problem_name + \
+                " [" + self.problem_tag + "]" + " from " + self.contest_tag
 
 
 class Submittion(models.Model):
