@@ -136,9 +136,6 @@ class SubmitView(generics.CreateAPIView):
     queryset = Submittion.objects.all()
     serializer_class = SubmittionsSerializer
 
-#    def post(self, request):  # add job
-#        pass
-
 
 class RegistContestView(generics.CreateAPIView):
     """ コンテストに参加登録するためのview
@@ -152,3 +149,22 @@ class StandingView(generics.ListAPIView):
     """ コンテストのランキングを返します """
     queryset = Submittion.objects.all()
     serializer_class = SubmittionsSerializer
+
+
+class SubmittionsView(generics.ListAPIView):
+    """ 提出一覧を返します """
+    permission_classes = (IsActiveContest, )
+    queryset = Submittion.objects.all()
+    serializer_class = SubmittionsSerializer
+
+    def get_queryset(self):
+        contest_tag = self.kwargs.get("contest_tag")
+        if Contest.objects.filter(contest_tag=contest_tag,
+                                  is_active=True).exists():
+            # is_activeがTrueなら自分のsubmittionしか返さない
+            username = self.request.user.username
+            return Submittion.objects.filter(contest_tag=contest_tag,
+                                             author=username)
+        else:
+            return Submittion.objects.filter(contest_tag=contest_tag)
+
