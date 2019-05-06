@@ -1,3 +1,4 @@
+import json
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
@@ -6,6 +7,7 @@ from django.core import serializers
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.http import HttpResponse, Http404
+from django.forms.models import model_to_dict
 
 from rest_framework import authentication, permissions, generics
 from rest_framework_jwt.settings import api_settings
@@ -30,6 +32,8 @@ class ContestsView(generics.ListAPIView, generics.CreateAPIView):
 
     # GET
     コンテストの一覧を返します
+    query_params:
+    is_schedule, is_activeでfilter, 指定しない場合は全部
 
     # POST (admin)
     コンテストを追加します
@@ -38,7 +42,13 @@ class ContestsView(generics.ListAPIView, generics.CreateAPIView):
     serializer_class = ContestsSerializer
 
     def get_queryset(self):
-        obj = Contest.objects.filter(is_open=True)
+        querys = self.request.query_params
+        if querys.get("is_schedule"):
+            obj = Contest.objects.filter(is_open=True, is_schedule=True)
+        elif querys.get("is_active"):
+            obj = Contest.objects.filter(is_open=True, is_active=True)
+        else:
+            obj = Contest.objects.filter(is_open=True)
         return obj
 
 
