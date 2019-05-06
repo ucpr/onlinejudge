@@ -10,12 +10,18 @@ from django.http import HttpResponse, Http404
 from django.forms.models import model_to_dict
 
 from rest_framework import authentication, permissions, generics
-from rest_framework_jwt.settings import api_settings
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework import status, viewsets, filters
 from rest_framework.views import APIView
+from rest_framework_jwt.settings import api_settings
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+
+from .permission import (
+        IsRegistedContest,
+        IsActiveContest
+    )
 
 from .serializers import (
         ProblemSerializer,
@@ -58,6 +64,7 @@ class ContestView(generics.ListAPIView):
     # GET
     コンテストの詳細を返します
     """
+    permission_classes = (IsRegistedContest, )
     queryset = Contest.objects.all()
     serializer_class = ContestSerializer
     lookup_url_kwarg = "contest_tag"
@@ -82,6 +89,7 @@ class ProblemsView(generics.ListAPIView, generics.CreateAPIView):
     # GET
     コンテストの問題の情報を返します (制約など)
     """
+    permission_classes = (IsActiveContest, )
     queryset = Problem.objects.all()
     serializer_class = ProblemSerializer
 
@@ -99,6 +107,7 @@ class ProblemView(generics.ListAPIView):
     # GET
     問題の詳細を返す
     """
+    permission_classes = (IsActiveContest, )
     queryset = Problem.objects.all()
     serializer_class = ProblemSerializer
     lookup_url_kwarg = ['problem_tag', 'contest_tag']
@@ -122,12 +131,24 @@ class SubmitView(generics.CreateAPIView):
         author
         language
     """
+    authentication_classes = (JSONWebTokenAuthentication, )
+    permission_classes = (IsActiveContest, )
     queryset = Submittion.objects.all()
     serializer_class = SubmittionsSerializer
+
+#    def post(self, request):  # add job
+#        pass
 
 
 class RegistContestView(generics.CreateAPIView):
     """ コンテストに参加登録するためのview
     """
+    authentication_classes = (JSONWebTokenAuthentication, )
     queryset = RegistContestUser.objects.all()
     serializer_class = RegistContestUserSerializer
+
+
+class StandingView(generics.ListAPIView):
+    """ コンテストのランキングを返します """
+    queryset = Submittion.objects.all()
+    serializer_class = SubmittionsSerializer
