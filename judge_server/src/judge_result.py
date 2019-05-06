@@ -8,7 +8,8 @@ class JudgeResult():
             error: str = "",
             warning: str = "",
             time: float = 0,
-            memory: int = 0):
+            memory: int = 0,
+            ac_per_test: str = 0):
         self.status = status
         self.time = time
         self.memory = memory
