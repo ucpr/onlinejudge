@@ -7,6 +7,7 @@ class Contest(models.Model):
     """
     is_open コンテストを表示するかしないか
     is_active 現在開催中のコンテストか
+    is_schedule 予定のコンテストか
     title コンテストのタイトル
     contest_tag コンテストのタグ
     start_date コンテストの開始時刻
@@ -17,6 +18,7 @@ class Contest(models.Model):
     """
     is_open = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
+    is_schedule = models.BooleanField(default=True)
     title = models.CharField(max_length=30, unique=True)
     contest_tag = models.CharField(max_length=15)
     start_date = models.DateField(default=now)
