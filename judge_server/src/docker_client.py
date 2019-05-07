@@ -3,6 +3,7 @@ import docker
 import json
 import os
 import sys
+import shutil
 import tarfile
 from judge_result import JudgeResult
 from submit_data import SubmitData
@@ -18,23 +19,29 @@ FILENAME_EXTENTIONS = {
 
 class DockerClient():
     client = docker.from_env()
-    COMMAND = "python3 judge.py"
+    # COMMAND = "python3 judge.py"
+    COMMAND = "ls /hogehoge"
     DIRECTORY_PATH = "./"
 
     def __init__(self, submit_data: SubmitData):
         self.submit_data = submit_data
-        self.container_name = 'code_runner_' + self.submit_data.language
-        self.directory_name = 'judge_' + self.submit_data.submit_id
+        # self.container_name = 'code_runner_' + self.submit_data.language
+        self.container_name = 'code_runner'
+        self.directory_name = 'judge_' + self.submit_data.submission_id
 
     def make_judge_directory(self):
         os.mkdir(self.DIRECTORY_PATH + self.directory_name)
         with open("{}/main.{}".format(
                 self.DIRECTORY_PATH + self.directory_name,
                 FILENAME_EXTENTIONS[self.submit_data.language]
-                )) as f:
+                ), 'w') as f:
             f.write(self.submit_data.source_code)
         # TODO: テストケースを用意する
         # fetch_problem_tests()
+        shutil.copyfile(
+            './testcases.tar.gz',
+            self.DIRECTORY_PATH + self.directory_name + '/testcases.tar.gz'
+            )
 
     def fetch_problem_testcases(self):
         # テストケースとかは何かで圧縮してDBのBinaryFieldってとこにいれることにしたので
@@ -46,12 +53,39 @@ class DockerClient():
         # submit_idはユニークなものだからUPDATEでいい
         pass
 
-    def run_container(self, language: str, command: str):
+    def run_container(self):
         # TODO: Time Limit
         # TODO: Memory Limit
         # TODO: Network Block
         # TODO: directory mount
-        self.client.containers.run(
+        output = self.client.containers.run(
             self.container_name,
-            command=self.COMMAND
+            command=self.COMMAND,
+            volumes={
+                # self.directory_name: {
+                os.getcwd() + '/judge_some_submit_id/': {
+                    'bind': '/problem',
+                    'mode': 'rw'
+                }
+            }
         )
+        print(output)
+
+if __name__ == '__main__':
+    # data = {
+    #     "submit_id": "some_submit_id",
+    #     "contest_tag": "some_contest_tag",
+    #     "problem_tag": "some_problem_tag",
+    #     "source_code": "print('some_source_code')",
+    #     "language": "python"
+    # }
+    data = SubmitData(
+        "some_submit_id",
+        "some_contest_tag",
+        "some_problem_tag",
+        "print('some_source_code')",
+        "python"
+    )
+    client = DockerClient(data)
+    # client.make_judge_directory()
+    client.run_container()
