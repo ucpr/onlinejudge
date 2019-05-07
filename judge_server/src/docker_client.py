@@ -3,6 +3,7 @@ import docker
 import json
 import os
 import sys
+import tarfile
 from judge_result import JudgeResult
 from submit_data import SubmitData
 
@@ -33,8 +34,17 @@ class DockerClient():
                 )) as f:
             f.write(self.submit_data.source_code)
         # TODO: テストケースを用意する
+        # fetch_problem_tests()
+
+    def fetch_problem_testcases(self):
         # テストケースとかは何かで圧縮してDBのBinaryFieldってとこにいれることにしたので
-        # DBはpostgreSQL
+        # DBはpostgreSQL bytea型
+        # contest_tag, problem_tagでfilterしてとる
+        pass
+
+    def update_submit_status(self):
+        # submit_idはユニークなものだからUPDATEでいい
+        pass
 
     def run_container(self, language: str, command: str):
         # TODO: Time Limit
