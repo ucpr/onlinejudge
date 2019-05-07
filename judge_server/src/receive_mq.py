@@ -19,7 +19,7 @@ class RecieveMQ():
     RABBITMQ_HOST = "localhost"
     QUEUE_NAME = "queue"
 
-    def __init__(self, *, host=RABBITMQ_HOST, queue=QUEUE_NAME):
+    def __init__(self, *, host=RABBITMQ_HOST, queue=QUEUE_NAME, db_session=None):
         # useQuery(body)でcallback関数でrabbitMQから受け取ったbodyを処理する
         # それはそうとネーミングセンスがない
         self.queue = queue
@@ -33,6 +33,8 @@ class RecieveMQ():
             on_message_callback=self.callback,
             auto_ack=True
         )
+        
+        self.db_session = db_session
 
     def callback(self, ch, method, properties, body):
         data = json.loads(body)
