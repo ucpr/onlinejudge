@@ -54,6 +54,7 @@ class Problem(models.Model):
     contest_tag = models.CharField(max_length=15)
     problem_name = models.CharField(max_length=20)
     problem_tag = models.CharField(max_length=15)
+    score = models.IntegerField()
     problem_order = models.IntegerField()
     time_limit = models.IntegerField()
     memory_limit = models.IntegerField(default=256)
@@ -113,3 +114,52 @@ class RegistContestUser(models.Model):
 
     def __str__(self):
         return "[" + self.contest_tag + "] " + self.username
+
+
+class Standing(models.Model):
+    """ コンテストのランキング
+
+    - problem_hoge_timeはproblem_hoge_scoreがACなら書き換えない
+    - ランキングは基本Scoreをみて、同じだったらtime
+    - last_ac_timeはACごとに書き換える
+    """
+    # これはactiveのときで登録してる人が投げた結果をあれする
+    contest_tag = models.CharField(max_length=15)
+    username = models.CharField(max_length=15)
+
+    problem_a_status = models.CharField(max_length=5)
+    problem_a_score = models.CharField(max_length=5)
+    problem_a_wrong = models.CharField(max_length=5)
+    problem_a_time = models.IntegerField()
+
+    problem_b_status = models.CharField(max_length=5)
+    problem_b_score = models.CharField(max_length=5)
+    problem_b_wrong = models.CharField(max_length=5)
+    problem_b_time = models.IntegerField()
+
+    problem_c_status = models.CharField(max_length=5)
+    problem_c_score = models.CharField(max_length=5)
+    problem_c_wrong = models.CharField(max_length=5)
+    problem_c_time = models.IntegerField()
+
+    problem_d_status = models.CharField(max_length=5)
+    problem_d_score = models.CharField(max_length=5)
+    problem_d_wrong = models.CharField(max_length=5)
+    problem_d_time = models.IntegerField()
+
+    problem_e_status = models.CharField(max_length=5)
+    problem_e_score = models.CharField(max_length=5)
+    problem_e_wrong = models.CharField(max_length=5)
+    problem_e_time = models.IntegerField()
+
+    problem_f_status = models.CharField(max_length=5)
+    problem_f_score = models.CharField(max_length=5)
+    problem_f_wrong = models.CharField(max_length=5)
+    problem_f_time = models.IntegerField()
+
+    scores = models.IntegerField()
+    last_ac_time = models.IntegerField()
+
+    def __str__(self):
+        return self.contest_tag + " " + self.username
+

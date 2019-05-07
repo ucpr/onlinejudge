@@ -5,6 +5,7 @@ from .models import Contest
 from .models import Problem
 from .models import Submittion
 from .models import RegistContestUser
+from .models import Standing
 
 
 class ProblemSerializer(serializers.ModelSerializer):
@@ -57,3 +58,12 @@ class RegistContestUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = RegistContestUser
         fields = '__all__'
+
+
+class StandingSerializer(serializers.ModelSerializer):
+    """ コンテストのランキング """
+
+    class Meta:
+        model = Standing
+        fields = '__all__'
+

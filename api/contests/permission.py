@@ -39,3 +39,14 @@ class IsActiveContest(permissions.BasePermission):
         else:  # activeじゃなかったらOK
             return True
 
+
+class IsScheduleContest(permissions.BasePermission):
+    """ コンテストが予約されているものかをみる
+    予約されていたらだめ！なのでpermを否定している
+    """
+
+    def has_permission(self, request, view):
+        tag = view.kwargs.get("contest_tag")
+        perm = Contest.objects.filter(contest_tag=tag,
+                                      is_schedule=True).exists()
+        return not perm

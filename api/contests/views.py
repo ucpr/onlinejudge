@@ -17,10 +17,12 @@ from rest_framework import status, viewsets, filters
 from rest_framework.views import APIView
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from django_filters import rest_framework as filters
 
 from .permission import (
         IsRegistedContest,
-        IsActiveContest
+        IsActiveContest,
+        IsScheduleContest,
     )
 
 from .serializers import (
@@ -29,8 +31,9 @@ from .serializers import (
         ContestSerializer,
         SubmittionsSerializer,
         RegistContestUserSerializer,
+        StandingSerializer,
     )
-from .models import Contest, Problem, Submittion, RegistContestUser
+from .models import Contest, Problem, Submittion, RegistContestUser, Standing
 
 
 class ContestsView(generics.ListAPIView, generics.CreateAPIView):
@@ -167,4 +170,13 @@ class SubmittionsView(generics.ListAPIView):
                                              author=username)
         else:
             return Submittion.objects.filter(contest_tag=contest_tag)
+
+
+class StandingsView(generics.ListAPIView):
+    """ コンテストのランキングを返します """
+    permission_classes = (IsScheduleContest, )
+    queryset = Standing.objects.all()
+    serializer_class = StandingSerializer
+    filter_backends = (filters.DjangoFilterBackend, )
+    filterset_fields = ('scores', 'last_ac_time')
 
