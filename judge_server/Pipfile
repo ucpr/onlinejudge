@@ -12,6 +12,7 @@ flake8 = "*"
 [packages]
 pika = "*"
 docker = "*"
+sqlalchemy = "*"
 
 [requires]
 python_version = "3.7"
