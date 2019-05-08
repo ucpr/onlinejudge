@@ -4,15 +4,19 @@ services:
   api:
     build: ./api
     volumes:
-  judge_server:
-    build: ./judge_server
       - ./api/:/app
-        #    command: python manage.py runserver 0.0.0.0:8000
     ports:
-      - 8000:8000
+      - "8000:8000"
     links:
       - postgres
- 
+
+         #  judge_server:
+         #    build: ./judge_server
+         #    ports:
+         #      - "8000:8000"
+         #
+         #
+  postgres:
     build: ./postgres
     restart: always
     ports:
