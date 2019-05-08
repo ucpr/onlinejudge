@@ -19,14 +19,12 @@ FILENAME_EXTENTIONS = {
 
 class DockerClient():
     client = docker.from_env()
-    # COMMAND = "python3 judge.py"
-    COMMAND = "ls /hogehoge"
+    COMMAND = "python /runner/main.py"
     DIRECTORY_PATH = "./"
 
     def __init__(self, submit_data: SubmitData):
         self.submit_data = submit_data
-        # self.container_name = 'code_runner_' + self.submit_data.language
-        self.container_name = 'code_runner'
+        self.container_name = 'code_runner_' + self.submit_data.language
         self.directory_name = 'judge_' + self.submit_data.submission_id
 
     def make_judge_directory(self):
@@ -54,22 +52,18 @@ class DockerClient():
         pass
 
     def run_container(self):
-        # TODO: Time Limit
-        # TODO: Memory Limit
         # TODO: Network Block
-        # TODO: directory mount
         output = self.client.containers.run(
             self.container_name,
             command=self.COMMAND,
             volumes={
-                # self.directory_name: {
-                os.getcwd() + '/judge_some_submit_id/': {
+                os.getcwd() + '/' + self.directory_name + '/': {
                     'bind': '/problem',
                     'mode': 'rw'
                 }
             }
         )
-        print(output)
+        print(json.loads(output))
 
 if __name__ == '__main__':
     # data = {
@@ -80,7 +74,7 @@ if __name__ == '__main__':
     #     "language": "python"
     # }
     data = SubmitData(
-        "some_submit_id",
+        "problem",
         "some_contest_tag",
         "some_problem_tag",
         "print('some_source_code')",
