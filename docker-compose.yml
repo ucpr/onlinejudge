@@ -1,13 +1,9 @@
 version: '3.3'
 
 services:
-  application:
+  api:
     build: ./api
-    ports:
-      - "8080:8080"
     volumes:
-      - ./:/app
-
   judge_server:
     build: ./judge_server
     ports:
@@ -30,4 +26,3 @@ services:
   mq:
     build: ./rabbitmq
     restart: always
-
