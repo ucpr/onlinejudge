@@ -29,7 +29,7 @@ class DockerClient():
 
     def make_judge_directory(self):
         os.mkdir(self.DIRECTORY_PATH + self.directory_name)
-        with open("{}/main.{}".format(
+        with open("{}/code.{}".format(
                 self.DIRECTORY_PATH + self.directory_name,
                 FILENAME_EXTENTIONS[self.submit_data.language]
                 ), 'w') as f:
