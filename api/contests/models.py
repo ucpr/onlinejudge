@@ -10,10 +10,8 @@ class Contest(models.Model):
     is_schedule 予定のコンテストか
     title コンテストのタイトル
     contest_tag コンテストのタグ
-    start_date コンテストの開始時刻
-    start_time コンテストの開始時間
-    end_date コンテストの終了時刻
-    end_time コンテストの終了時間
+    start_date_time コンテストの開始時刻
+    end_date_time コンテストの終了時刻
     writer 問題のwriter
     top_page トップページ
     """
@@ -22,15 +20,13 @@ class Contest(models.Model):
     is_schedule = models.BooleanField(default=True)
     title = models.CharField(max_length=30, unique=True)
     contest_tag = models.CharField(max_length=15)
-    start_date = models.DateField(default=now)
-    start_time = models.TimeField()
-    end_date = models.DateField(default=now)
-    end_time = models.TimeField()
+    start_date_time = models.DateTimeField(default=now)
+    end_date_time = models.DateTimeField(default=now)
     writer = models.CharField(max_length=30)
     top_page = models.TextField()
 
     def contest_time(self):
-        t = self.end_time - self.start_time
+        t = self.end_date_time - self.start_date_time
         return r.hours
 
     def __str__(self):
