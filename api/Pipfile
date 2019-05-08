@@ -19,6 +19,7 @@ six = "*"
 psycopg2-binary = "*"
 psycopg2 = "*"
 django-filter = "*"
+pika = "*"
 
 [requires]
 python_version = "3.7"
