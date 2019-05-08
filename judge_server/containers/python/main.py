@@ -9,16 +9,11 @@ from subprocess import TimeoutExpired
 from judge_result import JudgeResult
 
 
-# "abc".encode() -> byte列
-# b"abc".decode() -> str
-
-
 def run_process(input_):
     p = None
     try:
         p = subprocess.run(
             ["python", "/problem/code.py"],
-            # ["ls", "/problem"],
             input=input_.encode(),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -95,10 +90,10 @@ def main():
     judge_results = diff()
 
     statuses = [judge_result["status"] for judge_result in judge_results]
-    # ac_count = statuses.count("AC")
     res = {
         "status": check_status(statuses),
-        "ac_count": statuses.count("AC")
+        "ac_count": statuses.count("AC"),
+        "output": ""
     }
 
     print(json.dumps(res))
