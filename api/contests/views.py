@@ -19,10 +19,13 @@ from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django_filters import rest_framework as filters
 
+import pika
+
 from .permission import (
         IsRegistedContest,
         IsActiveContest,
         IsScheduleContest,
+        IsActive,
     )
 
 from .serializers import (
@@ -139,6 +142,34 @@ class SubmitView(generics.CreateAPIView):
     queryset = Submittion.objects.all()
     serializer_class = SubmittionsSerializer
 
+    def perform_create(self, serializer):
+        contest_tag = self.request.query_params.get("contest_tag")
+        problem_tag = self.request.query_params.get("problem_tag")
+        source_code = self.request.query_params.get("source_code")
+        author = self.request.query_params.get("author")
+        language = self.request.query_params.get("language")
+        serializer.save()
+        id_ = serializer.data.get("id")
+        self.add_job(problem_tag, id_, source_code, author, language)
+#        return submit
+
+    def add_job(self, problem_tag, id_, source_code, author, language):
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host="mq"))
+        channel = connection.channel()
+        channel.queue_declare(queue='judge_queue')
+
+        body = {
+            "problem_tag": problem_tag,
+            "id": id_,
+            "source_code": source_code,
+            "author": author,
+            "language": language,
+        }
+        channel.basic_publish(exchange='',
+                              routing_key='judge_queue',
+                              body=json.dumps(body))
+        connection.close()
+
 
 class RegistContestView(generics.CreateAPIView):
     """ コンテストに参加登録するためのview
@@ -180,3 +211,13 @@ class StandingsView(generics.ListAPIView):
     filter_backends = (filters.DjangoFilterBackend, )
     filterset_fields = ('scores', 'last_ac_time')
 
+
+class DetailsSubmittionView(generics.ListAPIView):
+    """ 提出の詳細を返します """
+    permission_classes = (IsActive, )
+    queryset = Submittion.objects.all()
+    serializer_class = SubmittionsSerializer
+
+    def get_queryset(self):
+        id_ = self.kwargs.get("problem_id")
+        return Submittion.objects.filter(id=id_)
