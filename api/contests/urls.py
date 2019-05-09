@@ -9,7 +9,8 @@ from .views import (
     SubmitView,
     RegistContestView,
     SubmittionsView,
-    StandingsView
+    StandingsView,
+    DetailsSubmittionView,
 )
 
 
@@ -21,5 +22,6 @@ urlpatterns = [
     path('contests/<str:contest_tag>/submit/', SubmitView.as_view()),
     path('contests/<str:contest_tag>/register/', RegistContestView.as_view()),
     path('contests/<str:contest_tag>/submittions/', SubmittionsView.as_view()),
+    path('contests/<str:contest_tag>/submittions/<int:problem_id>/', DetailsSubmittionView.as_view()),
     path('contests/<str:contest_tag>/standings/', StandingsView.as_view()),
 ]

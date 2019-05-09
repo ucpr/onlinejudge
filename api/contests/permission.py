@@ -1,6 +1,6 @@
 from rest_framework import permissions
 
-from .models import RegistContestUser, Contest
+from .models import RegistContestUser, Contest, Submittion
 
 
 class IsRegistedContest(permissions.BasePermission):
@@ -37,6 +37,24 @@ class IsActiveContest(permissions.BasePermission):
                                                      ).exists()
             return perm2
         else:  # activeじゃなかったらOK
+            return True
+
+
+class IsActive(permissions.BasePermission):
+    """ activeだったら自分ののみ """
+    def has_permission(self, request, view):
+        tag = view.kwargs.get("contest_tag")
+        id_ = view.kwargs.get("problem_id")
+        perm1 = Contest.objects.filter(contest_tag=tag,
+                                       is_open=True,
+                                       is_active=True).exists()
+        if perm1:
+            username = request.user.username
+            if Submittion.objects.filter(id=id_, author=username).exists():
+                return True
+            else:
+                return False
+        else:
             return True
 
 

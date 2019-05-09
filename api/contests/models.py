@@ -22,12 +22,9 @@ class Contest(models.Model):
     contest_tag = models.CharField(max_length=15)
     start_date_time = models.DateTimeField(default=now)
     end_date_time = models.DateTimeField(default=now)
+    contest_time = models.IntegerField(default=100)
     writer = models.CharField(max_length=30)
     top_page = models.TextField()
-
-    def contest_time(self):
-        t = self.end_date_time - self.start_date_time
-        return r.hours
 
     def __str__(self):
         return self.title + " [" + self.contest_tag + "]"
