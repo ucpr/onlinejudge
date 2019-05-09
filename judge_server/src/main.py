@@ -19,7 +19,7 @@ db_engine = create_engine("postgres://{}:{}@{}/{}".format(
 )
 
 Session = sessionmaker(bind=db_engine)
-session = Session()
+db_session = Session()
 
 
 # rabbitMQからメーセージを受け取ってcode_runnerコンテナで実行
