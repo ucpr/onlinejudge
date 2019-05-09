@@ -13,6 +13,7 @@ flake8 = "*"
 pika = "*"
 docker = "*"
 sqlalchemy = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"
