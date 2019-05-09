@@ -25,7 +25,7 @@ class DockerClient():
     def __init__(self, submit_data: SubmitData):
         self.submit_data = submit_data
         self.container_name = 'code_runner_' + self.submit_data.language
-        self.directory_name = 'judge_' + self.submit_data.submission_id
+        self.directory_name = 'judge_' + self.submit_data.id
 
     def make_judge_directory(self):
         os.mkdir(self.DIRECTORY_PATH + self.directory_name)
@@ -74,10 +74,10 @@ if __name__ == '__main__':
     #     "language": "python"
     # }
     data = SubmitData(
-        "problem",
-        "some_contest_tag",
+        "123456",
         "some_problem_tag",
         "print('some_source_code')",
+        "mitohato",
         "python"
     )
     client = DockerClient(data)

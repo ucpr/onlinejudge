@@ -39,10 +39,10 @@ class RecieveMQ():
     def callback(self, ch, method, properties, body):
         data = json.loads(body)
         submit_data = SubmitData(
-            data["submission_id"],
-            data["contest_tag"],
+            data["id"],
             data["problem_tag"],
             data["source_code"],
+            data["author"],
             data["language"]
         )
 
@@ -50,6 +50,7 @@ class RecieveMQ():
             return JudgeResult("WA", "Cannot run with specified language")
 
         # TODO: docker走らす系の処理
+        docker_client = DockerClient(SubmitData)
 
     def check_language_exists(self, language: str) -> bool:
         if language not in LANGUAGES:

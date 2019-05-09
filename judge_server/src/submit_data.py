@@ -3,9 +3,9 @@ from collections import namedtuple
 
 SubmitData = namedtuple('SubmitData',
                         [
-                            'submission_id',
-                            'contest_tag',
+                            'id',
                             'problem_tag',
                             'source_code',
+                            'author'
                             'language'
                         ])
