@@ -1,0 +1,25 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+neovim = "*"
+pycodestyle = "*"
+python-language-server = "*"
+bpython = "*"
+
+[packages]
+django = "*"
+djangorestframework = "*"
+django-cors-headers = "*"
+djangorestframework-jwt = "*"
+djangorestframework-camel-case = "*"
+six = "*"
+psycopg2-binary = "*"
+psycopg2 = "*"
+django-filter = "*"
+pika = "*"
+
+[requires]
+python_version = "3.7"
