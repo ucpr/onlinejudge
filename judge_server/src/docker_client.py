@@ -1,5 +1,6 @@
 # rabbitMQからのメッセージを解釈して指定のcode_runnerコンテナを走らせる
 import docker
+import sqlalchemy
 import json
 import os
 import sys
@@ -7,6 +8,7 @@ import shutil
 import tarfile
 from judge_result import JudgeResult
 from submit_data import SubmitData
+from models import Problem
 
 
 FILENAME_EXTENTIONS = {
@@ -41,13 +43,13 @@ class DockerClient():
             self.DIRECTORY_PATH + self.directory_name + '/testcases.tar.gz'
             )
 
-    def fetch_problem_testcases(self):
+    def fetch_problem_testcases(self, session):
         # テストケースとかは何かで圧縮してDBのBinaryFieldってとこにいれることにしたので
         # DBはpostgreSQL bytea型
         # contest_tag, problem_tagでfilterしてとる
-        pass
+        print(session.query(Problem).filter(Problem.id==self.submit_data.id).all())
 
-    def update_submit_status(self):
+    def update_submit_status(self, session):
         # submit_idはユニークなものだからUPDATEでいい
         pass
 

@@ -4,7 +4,7 @@ import sys
 from receive_mq import RecieveMQ
 
 
-DB_USER = "daizu"
+DB_USER = "postgres"
 DB_PASSWORD = "daizuhogehoge"
 DB_HOST = "postgres"
 DB_NAME = "postgres"

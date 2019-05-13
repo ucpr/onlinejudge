@@ -1,6 +1,7 @@
 import pika
 import json
 import sys
+from docker_client import DockerClient
 from judge_result import JudgeResult
 from submit_data import SubmitData
 
@@ -16,8 +17,8 @@ LANGUAGES = [
 
 class RecieveMQ():
     # 後で変える
-    RABBITMQ_HOST = "localhost"
-    QUEUE_NAME = "queue"
+    RABBITMQ_HOST = "mq"
+    QUEUE_NAME = "judge_queue"
 
     def __init__(self, *, host=RABBITMQ_HOST, queue=QUEUE_NAME, db_session=None):
         # useQuery(body)でcallback関数でrabbitMQから受け取ったbodyを処理する
@@ -50,7 +51,9 @@ class RecieveMQ():
             return JudgeResult("WA", "Cannot run with specified language")
 
         # TODO: docker走らす系の処理
-        docker_client = DockerClient(SubmitData)
+        docker_client = DockerClient(submit_data)
+        res = docker_client.fetch_problem_testcases(self.db_session)
+        print(res)
 
     def check_language_exists(self, language: str) -> bool:
         if language not in LANGUAGES:
