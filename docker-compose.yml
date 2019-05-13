@@ -1,18 +1,21 @@
 version: '3.3'
 
 services:
-  application:
+  api:
     build: ./api
-    ports:
-      - "8080:8080"
     volumes:
-      - ./:/app
-
-  judge_server:
-    build: ./judge_server
+      - ./api/:/app
     ports:
       - "8000:8000"
+    links:
+      - postgres
 
+         #  judge_server:
+         #    build: ./judge_server
+         #    ports:
+         #      - "8000:8000"
+         #
+         #
   postgres:
     build: ./postgres
     restart: always
@@ -30,4 +33,3 @@ services:
   mq:
     build: ./rabbitmq
     restart: always
-
